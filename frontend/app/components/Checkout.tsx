@@ -46,7 +46,7 @@ export default function Checkout({
     <>
       <main className="lg:flex lg:min-h-full lg:flex-row-reverse lg:overflow-hidden mt-8">
         <section className="hidden w-full max-w-md flex-col bg-gray-50 lg:flex justify-between">
-          <h2 className="text-black text-center text-2xl mb-2">
+          <h2 className="text-black text-center text-2xl mb-2 mt-4">
             Transaction Details
           </h2>
           <div className="text-black text-center mb-2">
