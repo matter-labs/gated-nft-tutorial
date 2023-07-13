@@ -9,11 +9,10 @@ import {
   NETWORK_NAME,
   NETWORK_ID,
 } from "../constants/consts";
-import { PowerStoneNft } from "../types/powerStoneNft";
+import { PowerStoneNft } from "../types/types";
 import { Address } from "zksync-web3/build/src/types";
 
 function WalletComponent() {
-
   const web3Context = useContext(Web3Context);
   const [networkOk, setNetworkOk] = useState(false);
   const [wallet, setWallet] = useState({ address: "", acc_short: "" });
@@ -34,7 +33,7 @@ function WalletComponent() {
     // 1. Create a new contract instance for the Greeter contract using the GREETER_ADDRESS and GREETER_CONTRACT_ABI, and set this instance in state.
     // 3. Call the greet() function from the greeterContract and set the result in state.
     // 4. Create a new contract instance for the Infinity Stone NFT contract using the NFT_CONTRACT_ADDRESS and NFT_CONTRACT_ABI.
-    // 5. Check the NFT balance of the signer's address. 
+    // 5. Check the NFT balance of the signer's address.
     // 6. If the balance is greater than zero, fetch the NFT metadata using the tokenURI
     // 7. Set state variables for contract instances, and nft balance.
   };

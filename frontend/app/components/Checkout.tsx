@@ -2,21 +2,7 @@ import Image from "next/image";
 import Text from "./Text";
 import { Contract } from "zksync-web3";
 import zkSyncImage from "../assets/zkSync_logo.png";
-import { PowerStoneNft } from "../types/powerStoneNft";
-
-type CheckoutProps = {
-  greeterInstance: Contract | null;
-  message: string;
-  setGreetingMessage: React.Dispatch<React.SetStateAction<string>>;
-  cost: string;
-  price: string;
-  gas: string;
-  nfts: PowerStoneNft[];
-};
-
-type GreeterData = {
-  message: string;
-};
+import { CheckoutProps, GreeterData } from "../types/types";
 
 export default function Checkout({
   greeterInstance,
@@ -27,7 +13,6 @@ export default function Checkout({
   gas,
   nfts,
 }: CheckoutProps) {
-  
   const hasNFT = nfts.length > 0;
   const updateGreeting = async ({ message }: GreeterData) => {
     // TODO: TO BE IMPLEMENTED
@@ -35,7 +20,7 @@ export default function Checkout({
     // 1. If the user owns an NFT, fetch paymaster params by importing the `usePaymaster` hook, and call the 'setGreeting' function on 'greeterInstance' with 'message' and 'params'.
     // 2. If not, user does get to use the paymaster, so call the 'setGreeting' function on 'greeterInstance' with only the 'message' parameter.
     // 3. Wait for the transaction to be confirmed.
-    // 4. Fetch the updated greeting message, and update the 'greeting' state. 
+    // 4. Fetch the updated greeting message, and update the 'greeting' state.
     // 5. If any error occurs during the process, the function should catch the error and log it to the console with a suitable message.
   };
 
@@ -68,9 +53,7 @@ export default function Checkout({
               </div>
               {!hasNFT && (
                 <div className="flex items-center justify-between border-t border-gray-200 pt-6 text-gray-900">
-                  <dt className="text-base">
-                    Total Cost:
-                  </dt>
+                  <dt className="text-base">Total Cost:</dt>
                   <dd className="text-base">{cost} ETH</dd>
                 </div>
               )}
@@ -78,9 +61,7 @@ export default function Checkout({
                 <>
                   {/* Just choose the first stone if the wallet has more than one */}
                   <div className="flex items-center justify-between border-t border-gray-200 pt-6 text-gray-900">
-                    <dt>
-                      Estimated Cost:
-                    </dt>
+                    <dt>Estimated Cost:</dt>
                     <dd className="text-base">{cost} ETH</dd>
                   </div>
                   <div className="flex justify-between">
@@ -89,19 +70,27 @@ export default function Checkout({
                       <span
                         className="ml-2 rounded-full bg-gray-200 px-2 py-0.5 text-xs tracking-wide text-white h-5"
                         style={{
-                          backgroundColor: nfts[0].attributes.find(x => x.trait_type === "Color")?.value,
+                          backgroundColor: nfts[0].attributes.find(
+                            (x) => x.trait_type === "Color",
+                          )?.value,
                           // Do not display white font on a yellow background, it should be black for readability
-                          color: nfts[0].attributes.find(x => x.trait_type === "Color")?.value === "Yellow" ? "black" : "white",
-                        }}>
+                          color:
+                            nfts[0].attributes.find(
+                              (x) => x.trait_type === "Color",
+                            )?.value === "Yellow"
+                              ? "black"
+                              : "white",
+                        }}
+                      >
                         {nfts[0].name}
                       </span>
                     </dt>
-                    <dd className="flex items-center text-emerald-500 font-bold">-100%</dd>
+                    <dd className="flex items-center text-emerald-500 font-bold">
+                      -100%
+                    </dd>
                   </div>
                   <div className="flex items-center justify-between border-t border-gray-200 pt-6 text-gray-900">
-                    <dt className="text-base">
-                      Total Cost:
-                    </dt>
+                    <dt className="text-base">Total Cost:</dt>
                     <dd className="text-base">FREE</dd>
                   </div>
                 </>
@@ -129,7 +118,8 @@ export default function Checkout({
                 <img
                   className="h-36"
                   src={nfts[0].image}
-                  alt="Power Stone Image" />
+                  alt="Power Stone Image"
+                />
               </div>
             ) : (
               <Text>

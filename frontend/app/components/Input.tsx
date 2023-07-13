@@ -4,14 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Web3Provider, Contract } from "zksync-web3";
 import Modal from "./Modal";
 import * as ethers from "ethers";
-import { PowerStoneNft } from "../types/powerStoneNft";
-
-type InputProps = {
-  greeterInstance: Contract | null;
-  setGreetingMessage: React.Dispatch<React.SetStateAction<string>>;
-  provider: Web3Provider | null;
-  nfts: PowerStoneNft[];
-};
+import { InputProps } from "../types/types";
 
 export default function Input({
   greeterInstance,
@@ -51,7 +44,7 @@ export default function Input({
     // TODO: TO BE IMPLEMENTED
     // REQUIREMENTS:
     // 1. Fetch the current gas price from the provider and store in a state variable
-    // 2. Estimate the amount of gas required for the `setGreeting` transaction and store in a state variable 
+    // 2. Estimate the amount of gas required for the `setGreeting` transaction and store in a state variable
     // 3. Calculate the cost of the transaction and store in a state variable
   }
 
@@ -78,7 +71,7 @@ export default function Input({
           Change message
         </button>
       </div>
-        {/* // TODO: TO BE IMPLEMENTED
+      {/* // TODO: TO BE IMPLEMENTED
         // REQUIREMENTS:
         // 1. Import the Modal component
         // 2. Render the `Modal` component when the `isOpen` state is true.

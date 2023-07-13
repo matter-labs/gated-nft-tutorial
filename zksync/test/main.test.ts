@@ -1,7 +1,7 @@
-import { expect } from 'chai';
-import { Wallet, Provider, Contract } from 'zksync-web3';
-import * as hre from 'hardhat';
-import { Deployer } from '@matterlabs/hardhat-zksync-deploy';
+import { expect } from "chai";
+import { Wallet, Provider, Contract } from "zksync-web3";
+import * as hre from "hardhat";
+import { Deployer } from "@matterlabs/hardhat-zksync-deploy";
 
 // load env file
 import dotenv from "dotenv";
@@ -13,11 +13,11 @@ if (!PRIVATE_KEY)
   throw "⛔️ Private key not detected! Add it to the .env file!";
 
 async function deployGreeter(deployer: Deployer): Promise<Contract> {
-  const artifact = await deployer.loadArtifact('Greeter');
-  return await deployer.deploy(artifact, ['Hi']);
+  const artifact = await deployer.loadArtifact("Greeter");
+  return await deployer.deploy(artifact, ["Hi"]);
 }
 
-describe('Greeter', function () {
+describe("Greeter", function () {
   it("Should return the new greeting once it's changed", async function () {
     const provider = Provider.getDefaultProvider();
 
@@ -26,12 +26,12 @@ describe('Greeter', function () {
 
     const greeter = await deployGreeter(deployer);
 
-    expect(await greeter.greet()).to.eq('Hi');
+    expect(await greeter.greet()).to.eq("Hi");
 
-    const setGreetingTx = await greeter.setGreeting('Hola, mundo!');
+    const setGreetingTx = await greeter.setGreeting("Hola, mundo!");
     // wait until the transaction is mined
     await setGreetingTx.wait();
 
-    expect(await greeter.greet()).to.equal('Hola, mundo!');
+    expect(await greeter.greet()).to.equal("Hola, mundo!");
   });
 });

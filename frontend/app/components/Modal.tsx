@@ -1,22 +1,9 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import {
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Contract } from "zksync-web3";
 import Checkout from "./Checkout";
-import { PowerStoneNft } from "../types/powerStoneNft";
-
-type ModalProps = {
-    closeModal: () => void;
-    greeterInstance: Contract | null;
-    message: string;
-    setGreetingMessage: React.Dispatch<React.SetStateAction<string>>;
-    cost: string;
-    price: string;
-    gas: string;
-    nfts: PowerStoneNft[];
-};
+import { ModalProps } from "../types/types";
 
 export default function Modal({
   closeModal,
@@ -26,7 +13,7 @@ export default function Modal({
   cost,
   price,
   gas,
-  nfts
+  nfts,
 }: ModalProps) {
   const [open, setOpen] = useState(true);
 
@@ -75,7 +62,8 @@ export default function Modal({
                     cost={cost}
                     price={price}
                     gas={gas}
-                    nfts={nfts} />
+                    nfts={nfts}
+                  />
                 </div>
               </Dialog.Panel>
             </Transition.Child>

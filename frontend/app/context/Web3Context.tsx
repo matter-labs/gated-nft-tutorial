@@ -1,7 +1,6 @@
-import React from 'react';
-
+import React from "react";
 import { Contract, Web3Provider, Signer } from "zksync-web3";
-import { PowerStoneNft } from "../types/powerStoneNft";
+import { PowerStoneNft } from "../types/types";
 
 export interface Web3ContextType {
   greeterContractInstance: Contract | null;
@@ -18,7 +17,7 @@ export interface Web3ContextType {
 
 export const defaultWeb3State: Web3ContextType = {
   greeterContractInstance: null,
-  greeting: '',
+  greeting: "",
   nfts: [],
   provider: null,
   signer: null,

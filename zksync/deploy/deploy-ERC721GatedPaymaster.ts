@@ -2,13 +2,12 @@ import { Provider, Wallet } from "zksync-web3";
 import * as ethers from "ethers";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { Deployer } from "@matterlabs/hardhat-zksync-deploy";
-import * as fs from 'fs';
+import * as fs from "fs";
 
 // load env file
 import dotenv from "dotenv";
 dotenv.config();
 
-// load wallet private key from env file
 const PRIVATE_KEY = process.env.WALLET_PRIVATE_KEY || "";
 // The address of the NFT collection contract
 const NFT_COLLECTION_ADDRESS = "NFT-CONTRACT-ADDRESS-HERE";
@@ -69,10 +68,11 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   );
 
   // Update frontend with contract address
-  const frontendConstantsFilePath = __dirname + '/../../frontend/app/constants/consts.tsx';
-  const data = fs.readFileSync(frontendConstantsFilePath, 'utf8');
+  const frontendConstantsFilePath =
+    __dirname + "/../../frontend/app/constants/consts.tsx";
+  const data = fs.readFileSync(frontendConstantsFilePath, "utf8");
   const result = data.replace(/PAYMASTER-CONTRACT-ADDRESS/g, paymaster.address);
-  fs.writeFileSync(frontendConstantsFilePath, result, 'utf8');
+  fs.writeFileSync(frontendConstantsFilePath, result, "utf8");
 
   console.log(`Done!`);
 }

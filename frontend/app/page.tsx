@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect,  useContext } from "react";
+import { useEffect, useContext } from "react";
 import Image from "next/image";
 import Text from "./components/Text";
 import WalletButton from "./components/WalletButton";
@@ -25,12 +25,12 @@ export default function Home() {
         />
       </div>
       <div className="mb-8">
-      <Text>
-        Explore this demonstrative dApp showcasing the key benefits of Paymasters
-        on zkSync Era. Enter a message, and discover if you own an Infinity
-        Stone NFT. Lucky holders enjoy gas-free transactions, covered by Stark
-        Industries paymaster. Give it a try now!
-      </Text>
+        <Text>
+          Explore this demonstrative dApp showcasing the key benefits of
+          Paymasters on zkSync Era. Enter a message, and discover if you own an
+          Infinity Stone NFT. Lucky holders enjoy gas-free transactions, covered
+          by Stark Industries paymaster. Give it a try now!
+        </Text>
       </div>
       {/* 
         // TODO: TO BE IMPLEMENTED

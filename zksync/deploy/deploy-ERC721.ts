@@ -1,8 +1,8 @@
 import { Provider, Wallet } from "zksync-web3";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
 import { Deployer } from "@matterlabs/hardhat-zksync-deploy";
-import * as fs from 'fs';
-import * as readline from 'readline';
+import * as fs from "fs";
+import * as readline from "readline";
 
 // load env file
 import dotenv from "dotenv";
@@ -16,7 +16,7 @@ if (!PRIVATE_KEY)
 
 const rl = readline.createInterface({
   input: process.stdin,
-  output: process.stdout
+  output: process.stdout,
 });
 
 async function getRecipientAddress(): Promise<string> {
@@ -29,19 +29,20 @@ async function getRecipientAddress(): Promise<string> {
         } else {
           resolve(address);
         }
-      }
+      },
     );
   });
 }
 
 export default async function (hre: HardhatRuntimeEnvironment) {
   console.log(`Running deploy script for the ERC721 contract...`);
-  console.log(`You first need to add a RECIPIENT_ADDRESS to mint the NFT to...`);
+  console.log(
+    `You first need to add a RECIPIENT_ADDRESS to mint the NFT to...`,
+  );
   // We will mint the NFTs to this address
   const RECIPIENT_ADDRESS = await getRecipientAddress();
-  if (!RECIPIENT_ADDRESS)
-    throw "⛔️ RECIPIENT_ADDRESS not detected!";
-  
+  if (!RECIPIENT_ADDRESS) throw "⛔️ RECIPIENT_ADDRESS not detected!";
+
   // It is assumed that this wallet already has sufficient funds on zkSync
   const wallet = new Wallet(PRIVATE_KEY);
   const deployer = new Deployer(hre, wallet);
@@ -50,18 +51,6 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   const nftContractArtifact = await deployer.loadArtifact("InfinityStones");
   const nftContract = await deployer.deploy(nftContractArtifact, []);
   console.log(`NFT Contract address: ${nftContract.address}`);
-
-  const NFT_COLLECTION = [
-    "Space Stone",
-    "Mind Stone",
-    "Reality Stone",
-    "Power Stone",
-    "Time Stone",
-    "Soul Stone"
-  ];
-
-  // Randomly select a stone from the NFT_COLLECTION
-  const stone = NFT_COLLECTION[Math.floor(Math.random() * NFT_COLLECTION.length)];
 
   // Mint NFTs to the recipient address
   const stone = "Power Stone";
@@ -74,7 +63,9 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   console.log(`Balance of the recipient: ${balance}`);
 
   // Update base URI
-  let setBaseUriTransaction = await nftContract.setBaseURI("https://ipfs.io/ipfs/QmPtDtJEJDzxthbKmdgvYcLa9oNUUUkh7vvz5imJFPQdKx");
+  let setBaseUriTransaction = await nftContract.setBaseURI(
+    "https://ipfs.io/ipfs/QmPtDtJEJDzxthbKmdgvYcLa9oNUUUkh7vvz5imJFPQdKx",
+  );
   await setBaseUriTransaction.wait();
   console.log(`New baseURI is ${await nftContract.baseURI()}`);
 
@@ -93,16 +84,18 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   );
 
   // Update frontend with contract address
-  const frontendConstantsFilePath = __dirname + '/../../frontend/app/constants/consts.tsx';
-  const data = fs.readFileSync(frontendConstantsFilePath, 'utf8');
+  const frontendConstantsFilePath =
+    __dirname + "/../../frontend/app/constants/consts.tsx";
+  const data = fs.readFileSync(frontendConstantsFilePath, "utf8");
   const result = data.replace(/NFT-CONTRACT-ADDRESS/g, nftContract.address);
-  fs.writeFileSync(frontendConstantsFilePath, result, 'utf8');
+  fs.writeFileSync(frontendConstantsFilePath, result, "utf8");
 
-  // Update frontend with contract address
-  const paymasterDeploymentFilePath = __dirname + '/deploy-ERC721GatedPaymaster.ts';
-  const res = fs.readFileSync(paymasterDeploymentFilePath, 'utf8');
+  // Update paymaster deploy script with contract address
+  const paymasterDeploymentFilePath =
+    __dirname + "/deploy-ERC721GatedPaymaster.ts";
+  const res = fs.readFileSync(paymasterDeploymentFilePath, "utf8");
   const final = res.replace(/NFT-CONTRACT-ADDRESS-HERE/g, nftContract.address);
-  fs.writeFileSync(paymasterDeploymentFilePath, final, 'utf8');
+  fs.writeFileSync(paymasterDeploymentFilePath, final, "utf8");
 
   console.log(`Done!`);
 }
