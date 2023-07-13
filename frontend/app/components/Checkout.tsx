@@ -4,8 +4,6 @@ import { Contract } from "zksync-web3";
 import zkSyncImage from "../assets/zkSync_logo.png";
 import { PowerStoneNft } from "../types/powerStoneNft";
 
-const method = "setGreeting";
-
 type CheckoutProps = {
   greeterInstance: Contract | null;
   message: string;
@@ -29,9 +27,8 @@ export default function Checkout({
   gas,
   nfts,
 }: CheckoutProps) {
-  // Updates greeting on the contract
+  
   const hasNFT = nfts.length > 0;
-
   const updateGreeting = async ({ message }: GreeterData) => {
     // TODO: TO BE IMPLEMENTED
     // REQUIREMENTS:
@@ -59,7 +56,7 @@ export default function Checkout({
             <dl className="mt-4 space-y-6 text-sm font-medium text-gray-500">
               <div className="flex justify-between">
                 <dt>Transaction: </dt>
-                <dd className="text-gray-900">{method}</dd>
+                <dd className="text-gray-900">setGreeting</dd>
               </div>
               <div className="flex justify-between">
                 <dt>Transaction Fee: </dt>

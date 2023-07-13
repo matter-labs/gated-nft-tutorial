@@ -64,6 +64,7 @@ export default async function (hre: HardhatRuntimeEnvironment) {
   const stone = NFT_COLLECTION[Math.floor(Math.random() * NFT_COLLECTION.length)];
 
   // Mint NFTs to the recipient address
+  const stone = "Power Stone";
   const tx = await nftContract.mint(RECIPIENT_ADDRESS, stone);
   await tx.wait();
   console.log(`The ${stone} has been given to ${RECIPIENT_ADDRESS}`);

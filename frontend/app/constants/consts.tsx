@@ -1,5 +1,3 @@
-// here for convenience
-
 export const GREETER_CONTRACT_ABI =
   require("../../../zksync/artifacts-zk/contracts/Greeter.sol/Greeter.json").abi;
 export const NFT_CONTRACT_ABI =
