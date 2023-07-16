@@ -61,7 +61,7 @@ function WalletComponent() {
     // TODO: TO BE IMPLEMENTED
     // REQUIREMENTS:
     // 1. Ensure we are connected to the correct network.
-    // 2. Connect the users MetaMask account to the DApp and catch any
+    // 2. Connect the users MetaMask account to the DApp
     // 3. Set the provider, and signer for later usage.
     // 4. Store the users wallet address in state.
     // 5. Instantiate the contracts

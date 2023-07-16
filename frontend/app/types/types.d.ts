@@ -44,6 +44,12 @@ export interface PowerStoneAttributes {
   value: string;
 }
 
+type PaymasterProps = {
+    greeterInstance: Contract;
+    message: string;
+    price: string;
+};
+
 export {
   InputProps,
   CheckoutProps,
@@ -51,4 +57,5 @@ export {
   ModalProps,
   PowerStoneNft,
   PowerStoneAttributes,
+  PaymasterProps,
 };

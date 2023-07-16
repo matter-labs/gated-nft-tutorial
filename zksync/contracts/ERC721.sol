@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/utils/Strings.sol";
 contract InfinityStones is ERC721URIStorage, Ownable {
     uint256 public tokenId;
     string public baseURI;
+    mapping (string => bool) public stoneExists;
     mapping (address => uint256[]) private _ownedTokens;
 
     string[] public stones = [

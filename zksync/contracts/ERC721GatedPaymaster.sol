@@ -46,10 +46,9 @@ contract ERC721GatedPaymaster is IPaymaster, Ownable {
         // 1. Only the bootloader can validate and pay for the paymaster transaction.
         // 2. The standard paymaster input must be at least 4 bytes long.
         // 3. We must use a valid paymaster input selector (e.g. General or Approval-based).
-        // 4. The user address extracted from the transaction must own the required NFT asset to use the paymaster.
+        // 4. The user address from the transaction must own the required NFT asset to use the paymaster.
         // 5. We need to calculate the minimum required ETH value to pay for the transaction.
         // 6. We need to to use the Bootloader to execute the transaction.
-        // 7. If the paymaster input selector is not a valid selector, the transaction should revert with an "Invalid paymaster flow" message.
     }
 
     function postTransaction(

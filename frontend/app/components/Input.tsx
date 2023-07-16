@@ -15,12 +15,9 @@ export default function Input({
   // State variables
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState("");
-
-  // TODO: TO BE IMPLEMENTED
-  // REQUIREMENTS:
-  // 1. Create a state variable to manage the state of the gasEstimate.
-  // 2. Create a state variable to manage the state of the gasPrice.
-  // 3. Create a state variable to manage the state of the total gas cost.
+  const [cost, setCost] = useState("");
+  const [price, setPrice] = useState("");
+  const [gas, setGas] = useState("");
 
   useEffect(() => {
     if (message !== "") {
