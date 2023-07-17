@@ -1,7 +1,6 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Contract } from "zksync-web3";
 import Checkout from "./Checkout";
 import { ModalProps } from "../types/types";
 

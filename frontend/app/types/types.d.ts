@@ -45,9 +45,9 @@ export interface PowerStoneAttributes {
 }
 
 type PaymasterProps = {
-    greeterInstance: Contract;
-    message: string;
-    price: string;
+  greeterInstance: Contract;
+  message: string;
+  price: string;
 };
 
 export {

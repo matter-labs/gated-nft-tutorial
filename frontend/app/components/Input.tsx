@@ -1,7 +1,6 @@
 "use client";
 import { PencilIcon } from "@heroicons/react/20/solid";
 import React, { useState, useEffect } from "react";
-import { Web3Provider, Contract } from "zksync-web3";
 import Modal from "./Modal";
 import * as ethers from "ethers";
 import { InputProps } from "../types/types";

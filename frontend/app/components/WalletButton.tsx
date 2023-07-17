@@ -39,8 +39,8 @@ function WalletComponent() {
   };
 
   const checkNetwork = async () => {
-    if (window.ethereum) {
-      const currentChainId = await window.ethereum.request({
+    if ((window as any).ethereum) {
+      const currentChainId = await (window as any).ethereum.request({
         method: "eth_chainId",
       });
 
@@ -49,7 +49,7 @@ function WalletComponent() {
   };
 
   const switchNetwork = async () => {
-    await window.ethereum.request({
+    await (window as any).ethereum.request({
       method: "wallet_switchEthereumChain",
       params: [{ chainId: NETWORK_ID }],
     });

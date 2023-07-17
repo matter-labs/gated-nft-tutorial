@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Text from "./Text";
-import { Contract } from "zksync-web3";
 import zkSyncImage from "../assets/zkSync_logo.png";
 import { CheckoutProps, GreeterData } from "../types/types";
 

@@ -1,6 +1,6 @@
 import { Contract, utils } from "zksync-web3";
 import { PAYMASTER_CONTRACT_ADDRESS } from "../constants/consts";
-import { PaymasterProps} from "../types/types";
+import { PaymasterProps } from "../types/types";
 import * as ethers from "ethers";
 
 const usePaymaster = async ({
