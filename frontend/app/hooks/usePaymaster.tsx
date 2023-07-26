@@ -8,12 +8,35 @@ const usePaymaster = async ({
   message,
   price,
 }: PaymasterProps) => {
-  // TODO: TO BE IMPLEMENTED
-  // REQUIREMENTS:
-  // 1. Prepare the 'paramsForFeeEstimation' by calling 'getPaymasterParams' function from zksync-web3 utils with the 'PAYMASTER_CONTRACT_ADDRESS' and an object containing 'type' set to 'General' and 'innerInput' as a new instance of Uint8Array.
-  // 2. Estimate the gas limit for the 'setGreeting' function call on 'greeterInstance' with 'message' and'customData' object as arguments.
-  // 3. Define 'paymasterParams' with the same values as 'paramsForFeeEstimation'.
-  // 4. Return an object containing 'maxFeePerGas', 'maxPriorityFeePerGas', 'gasLimit', and 'customData' with 'gasPerPubdata' and 'paymasterParams'.
+  let gasPrice = ethers.utils.parseEther(price);
+  const paymasterParams = utils.getPaymasterParams(
+    PAYMASTER_CONTRACT_ADDRESS,
+    {
+      type: "General",
+      innerInput: new Uint8Array(),
+    }
+  );
+  
+  // estimate gasLimit via paymaster
+  const gasLimit = await greeterInstance.estimateGas.setGreeting(
+    message,
+    {
+      customData: {
+        gasPerPubdata: utils.DEFAULT_GAS_PER_PUBDATA_LIMIT,
+        paymasterParams: paymasterParams,
+      },
+    }
+  );
+  
+  return {
+    maxFeePerGas: gasPrice,
+    maxPriorityFeePerGas: ethers.BigNumber.from(0),
+    gasLimit: gasLimit,
+    customData: {
+      gasPerPubdata: utils.DEFAULT_GAS_PER_PUBDATA_LIMIT,
+      paymasterParams: paymasterParams,
+    },
+  };
 };
 
 export default usePaymaster;

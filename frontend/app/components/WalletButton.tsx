@@ -28,14 +28,51 @@ function WalletComponent() {
   };
 
   const initContracts = async (provider: Web3Provider, signer: Signer) => {
-    // TODO: TO BE IMPLEMENTED
-    // REQUIREMENTS:
-    // 1. Create a new contract instance for the Greeter contract using the GREETER_ADDRESS and GREETER_CONTRACT_ABI, and set this instance in state.
-    // 3. Call the greet() function from the greeterContract and set the result in state.
-    // 4. Create a new contract instance for the Infinity Stone NFT contract using the NFT_CONTRACT_ADDRESS and NFT_CONTRACT_ABI.
-    // 5. Check the NFT balance of the signer's address.
-    // 6. If the balance is greater than zero, fetch the NFT metadata using the tokenURI
-    // 7. Set state variables for contract instances, and nft balance.
+    if (provider && signer) {
+      const greeterContract = new Contract(
+        GREETER_ADDRESS,
+        GREETER_CONTRACT_ABI,
+        signer
+      );
+    
+      web3Context.setGreeterContractInstance(greeterContract);
+    
+      const fetchedGreeting = await greeterContract.greet();
+      web3Context.setGreetingMessage(fetchedGreeting);
+      
+      const nftContract = new Contract(
+        NFT_CONTRACT_ADDRESS,
+        NFT_CONTRACT_ABI,
+        signer
+      );
+    
+      const address = await signer.getAddress();
+      const balance = await nftContract.balanceOf(address);
+      if (balance > 0) {
+        let ownedStones: PowerStoneNft[] = [];
+        const ownedTokensResponse = await nftContract.tokensOfOwner(address);
+    
+        for (let i = 0; i < ownedTokensResponse.length; i++) {
+          const tokenId = ownedTokensResponse[i];
+    
+          const tokenURI = await nftContract.tokenURI(tokenId);
+          if (tokenURI == undefined || tokenURI == "") {
+            continue;
+          }
+    
+          const response = await fetch(tokenURI);
+          if (!response.ok) {
+            continue;
+          }
+    
+          ownedStones.push((await response.json()) as PowerStoneNft);
+        }
+    
+        web3Context.setNfts(ownedStones);
+      } else {
+        web3Context.setNfts([]);
+      }
+    }
   };
 
   const checkNetwork = async () => {
@@ -58,13 +95,26 @@ function WalletComponent() {
   };
 
   const connectWallet = async () => {
-    // TODO: TO BE IMPLEMENTED
-    // REQUIREMENTS:
-    // 1. Ensure we are connected to the correct network.
-    // 2. Connect the users MetaMask account to the DApp
-    // 3. Set the provider, and signer for later usage.
-    // 4. Store the users wallet address in state.
-    // 5. Instantiate the contracts
+      console.log("connectWallet")
+      if (!networkOk) await switchNetwork();
+      try {
+        if ((window as any).ethereum) {
+          const provider = new Web3Provider((window as any).ethereum);
+          web3Context.setProvider(provider);
+    
+          const data = await provider.send("eth_requestAccounts", []);
+          
+          const signerInstance = provider.getSigner();
+          web3Context.setSigner(signerInstance);
+    
+          setWallet({ address: data[0], acc_short: shortenAddress(data[0]) });
+    
+          await initContracts(provider, signerInstance);
+        }
+      } catch (error) {
+        console.error("Error connecting DApp to your wallet");
+        console.error(error);
+      }
   };
 
   return (

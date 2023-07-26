@@ -23,14 +23,20 @@ contract InfinityStones is ERC721URIStorage, Ownable {
     constructor() ERC721("InfinityStones", "ISTN") {}
 
     function mint(address recipient, string memory stoneName) public onlyOwner {
-        // TODO: TO BE IMPLEMENTED
-        // REQUIREMENTS:
-        // 1. Only the owner of the contract can mint
-        // 2. The stone name must be one of the 6 stones
-        // 3. The stone name must not have been minted before
-        // 4. The stoneName cannot be empty
-        // 5. The recipient must be a valid non-zero address
-        // 6. We must add the token to the list of tokens owned by the recipient
+        require(bytes(stoneName).length > 0, "stoneName must not be empty");
+        require(recipient != address(0), "recipient must not be the zero address");
+        require(!stoneExists[stoneName], "This stone already exists");
+        
+        for(uint i=0; i<stones.length; i++) {
+            if(keccak256(bytes(stoneName)) == keccak256(bytes(stones[i]))) {
+                stoneExists[stoneName] = true;
+                _safeMint(recipient, tokenId);
+                _ownedTokens[recipient].push(tokenId);
+                _setTokenURI(tokenId, stoneName);
+                tokenId++;
+                break;
+            }
+        }
     }
 
     function setBaseURI(string memory _baseURI) public onlyOwner {

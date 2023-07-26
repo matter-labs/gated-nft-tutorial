@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useContext } from "react";
+import { useContext } from "react";
 import Image from "next/image";
 import Text from "./components/Text";
 import WalletButton from "./components/WalletButton";
+import Greeting from "./components/GreeterMessage";
+import Input from "./components/Input";
 import Web3Context from "./context/Web3Context";
 import zkSyncImage from "./assets/zkSync_logo.png";
 
@@ -32,14 +34,13 @@ export default function Home() {
           by Stark Industries paymaster. Give it a try now!
         </Text>
       </div>
-      {/* 
-        // TODO: TO BE IMPLEMENTED
-        // REQUIREMENTS:
-        // 1. Import the Greeting component
-        // 2. Pass the greeting to the Greeting component as a prop.
-        // 3. Import the Input component
-        // 4. Pass the greeterContractInstance, setGreetingMessage, provider, nfts to the Input component as props.
-      */}
+      <Greeting greeting={web3Context.greeting} />
+      <Input
+          greeterInstance={web3Context.greeterContractInstance}
+          setGreetingMessage={web3Context.setGreetingMessage}
+          provider={web3Context.provider}
+          nfts={web3Context.nfts}
+      />
       <div className="mb-12"></div>
     </main>
   );

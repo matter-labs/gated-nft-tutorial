@@ -37,11 +37,21 @@ export default function Input({
   };
 
   async function getEstimate() {
-    // TODO: TO BE IMPLEMENTED
-    // REQUIREMENTS:
-    // 1. Fetch the current gas price from the provider and store in a state variable
-    // 2. Estimate the amount of gas required for the `setGreeting` transaction and store in a state variable
-    // 3. Calculate the cost of the transaction and store in a state variable
+    // Get gas price
+    if (!provider) return;
+    let gasPrice = await provider.getGasPrice();
+    let price = ethers.utils.formatEther(gasPrice.toString());
+    setPrice(price);
+    // Estimate gas required for transaction
+    if (!greeterInstance) return;
+    let gasEstimate = await greeterInstance.estimateGas["setGreeting"](message);
+    let gas = ethers.utils.formatEther(gasEstimate.toString());
+    setGas(gas);
+    // Calculate the cost: gasPrice * gasEstimate
+    let transactionCost = gasPrice.mul(gasEstimate);
+    let cost = ethers.utils.formatEther(transactionCost.toString());
+    // Set the cost state
+    setCost(cost);
   }
 
   return (
@@ -67,13 +77,18 @@ export default function Input({
           Change message
         </button>
       </div>
-      {/* // TODO: TO BE IMPLEMENTED
-        // REQUIREMENTS:
-        // 1. Import the Modal component
-        // 2. Render the `Modal` component when the `isOpen` state is true.
-        // 3. Pass the closeModal function to the Modal component as a prop.
-        // 4. Pass the greeterInstance, setGreetingMessage, message, cost, price, gas, and nfts to the Modal component as props. 
-        */}
+      {isOpen && (
+          <Modal
+              closeModal={closeModal}
+              greeterInstance={greeterInstance}
+              message={message}
+              setGreetingMessage={setGreetingMessage}
+              cost={cost}
+              price={price}
+              gas={gas}
+              nfts={nfts}
+          />
+      )}
     </div>
   );
 }

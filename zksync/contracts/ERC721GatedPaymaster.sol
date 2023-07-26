@@ -41,14 +41,33 @@ contract ERC721GatedPaymaster is IPaymaster, Ownable {
         onlyBootloader
         returns (bytes4 magic, bytes memory context)
     {
-        // TODO: TO BE IMPLEMENTED
-        // REQUIREMENTS:
-        // 1. Only the bootloader can validate and pay for the paymaster transaction.
-        // 2. The standard paymaster input must be at least 4 bytes long.
-        // 3. We must use a valid paymaster input selector (e.g. General or Approval-based).
-        // 4. The user address from the transaction must own the required NFT asset to use the paymaster.
-        // 5. We need to calculate the minimum required ETH value to pay for the transaction.
-        // 6. We need to to use the Bootloader to execute the transaction.
+        magic = PAYMASTER_VALIDATION_SUCCESS_MAGIC;
+        require(
+            _transaction.paymasterInput.length >= 4,
+            "The standard paymaster input must be at least 4 bytes long"
+        );
+        
+        bytes4 paymasterInputSelector = bytes4(
+            _transaction.paymasterInput[0:4]
+        );
+        
+        if (paymasterInputSelector == IPaymasterFlow.general.selector) {
+            address userAddress = address(uint160(_transaction.from));
+        
+            require(
+                nft_asset.balanceOf(userAddress) > 0,
+                "User does not hold the required NFT asset and therefore must pay for their own gas!"
+            );
+        
+            uint256 requiredETH = _transaction.gasLimit *
+                _transaction.maxFeePerGas;
+        
+            (bool success, ) = payable(BOOTLOADER_FORMAL_ADDRESS).call{
+                value: requiredETH
+            }("");
+        } else {
+            revert("Invalid paymaster flow");
+        }
     }
 
     function postTransaction(

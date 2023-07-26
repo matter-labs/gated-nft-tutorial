@@ -2,6 +2,7 @@ import Image from "next/image";
 import Text from "./Text";
 import zkSyncImage from "../assets/zkSync_logo.png";
 import { CheckoutProps, GreeterData } from "../types/types";
+import usePaymaster from "../hooks/usePaymaster";
 
 export default function Checkout({
   greeterInstance,
@@ -14,13 +15,28 @@ export default function Checkout({
 }: CheckoutProps) {
   const hasNFT = nfts.length > 0;
   const updateGreeting = async ({ message }: GreeterData) => {
-    // TODO: TO BE IMPLEMENTED
-    // REQUIREMENTS:
-    // 1. If the user owns an NFT, fetch paymaster params by importing the `usePaymaster` hook, and call the 'setGreeting' function on 'greeterInstance' with 'message' and 'params'.
-    // 2. If not, user does get to use the paymaster, so call the 'setGreeting' function on 'greeterInstance' with only the 'message' parameter.
-    // 3. Wait for the transaction to be confirmed.
-    // 4. Fetch the updated greeting message, and update the 'greeting' state.
-    // 5. If any error occurs during the process, the function should catch the error and log it to the console with a suitable message.
+    try {
+        if (greeterInstance == null) {
+            return;
+        }
+    
+        let txHandle;
+        if (hasNFT) {
+            const params = await usePaymaster({ greeterInstance, message, price });
+            txHandle = await greeterInstance.setGreeting(message, params);
+        } else {
+            txHandle = await greeterInstance.setGreeting(message);
+        }
+    
+        // Wait until the transaction is committed
+        await txHandle.wait();
+    
+        // Update greeting
+        const updatedGreeting = await greeterInstance.greet();
+        setGreetingMessage(updatedGreeting);
+    } catch (error) {
+        console.error("Failed to update greeting: ", error);
+    }
   };
 
   return (
